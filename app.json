@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "TrueView Camera",
+    "slug": "true-view-camera",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.trueviewcamera.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs camera access to take photos and videos.",
+        "NSMicrophoneUsageDescription": "This app needs microphone access for video recording.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save and load photos.",
+        "NSPhotoLibraryAddUsageDescription": "This app needs access to save photos to your library."
+      }
+    },
+    "android": {
+      "package": "com.trueviewcamera.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow TrueView Camera to access your camera for taking photos and videos."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow TrueView Camera to access your photos.",
+          "savePhotosPermission": "Allow TrueView Camera to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ]
+  }
+}
