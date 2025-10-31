@@ -118,10 +118,11 @@ export default function CameraScreen({ navigation }) {
 
   const onFacesDetected = ({ faces }) => {
     if (faces.length > 0 && realToneEnabled) {
-      // Simulate skin tone detection from face data
-      // In production, this would analyze the actual face region pixels
-      const estimatedMST = 6; // Default to medium-tan (MST-6)
-      setDetectedSkinTone(MONK_SKIN_TONE_SCALE[`MST_${estimatedMST}`]);
+      // TODO: In production, analyze actual face region pixels for accurate skin tone detection
+      // For now, use a placeholder that would be replaced with actual detection
+      // This simulates the detection until ML models or image analysis is integrated
+      const placeholderMST = 6; // Medium-tan as reasonable default
+      setDetectedSkinTone(MONK_SKIN_TONE_SCALE[`MST_${placeholderMST}`]);
     }
     
     if (autoCaptureEnabled && faces.length > 0) {

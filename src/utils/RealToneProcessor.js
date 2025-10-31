@@ -128,7 +128,6 @@ export class RealToneProcessor {
   /**
    * Apply local tone mapping for shadow and highlight preservation
    * Critical for darker skin tones to maintain texture and detail
-   * @param {Object} imageData - Image pixel data
    * @param {number} mstId - Monk Skin Tone Scale ID
    * @returns {Object} - Tone mapping parameters
    */
