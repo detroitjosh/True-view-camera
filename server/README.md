@@ -6,6 +6,9 @@ This server provides AI-powered image and video generation capabilities for the 
 
 - **Text-to-Image Generation**: Create images from text prompts
 - **Text-to-Video Generation**: Generate short videos from descriptions
+- **Image-to-Video Generation**: Animate static images with AI-powered motion
+- **Multi-Image Movies**: Create personalized movies from multiple photos
+- **Avatar Animation**: Bring portraits to life with facial animation
 - **Background Replacement**: AI-powered background editing
 - **Image Retouching**: Enhance photos while preserving natural skin tones
 
@@ -67,6 +70,22 @@ pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float
 pipe = pipe.to("cuda")
 ```
 
+For image-to-video animation, install Stable Video Diffusion:
+
+```python
+from diffusers import StableVideoDiffusionPipeline
+import torch
+
+model_id = "stabilityai/stable-video-diffusion-img2vid"
+pipe = StableVideoDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+```
+
+For avatar animation, consider models like:
+- **SadTalker**: Talking head generation from a single image
+- **First Order Motion Model**: Transfer motion from driving video
+- **Wav2Lip**: Lip-sync animation
+
 ### Option 2: HuggingFace Inference API
 
 Set up your HuggingFace API key in the mobile app's `.env`:
@@ -122,6 +141,39 @@ Body: {
 POST /edit/retouch
 Body: {
   "image_uri": "file://..."
+}
+```
+
+### Generate Video from Image
+```
+POST /generate/image-to-video
+Body: {
+  "image_uri": "file://path/to/image.jpg",
+  "prompt": "smooth zoom in motion",
+  "duration": 3,
+  "motion_type": "auto",
+  "fps": 24
+}
+```
+
+### Generate Slideshow/Movie from Multiple Images
+```
+POST /generate/slideshow
+Body: {
+  "image_uris": ["file://image1.jpg", "file://image2.jpg", ...],
+  "duration_per_image": 3,
+  "transition_type": "fade",
+  "fps": 24,
+  "include_motion": true
+}
+```
+
+### Animate Avatar
+```
+POST /generate/animate-avatar
+Body: {
+  "image_uri": "file://path/to/portrait.jpg",
+  "motion_prompt": "speaking with natural expressions"
 }
 ```
 

@@ -40,6 +40,8 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.featuresContainer}>
           <Text style={styles.featuresTitle}>Features</Text>
           <FeatureItem icon="🎨" text="Optimized for darker skin tones" />
+          <FeatureItem icon="🎬" text="Create personalized movies from photos" />
+          <FeatureItem icon="✨" text="Animate images with AI motion" />
           <FeatureItem icon="🤖" text="AI-powered image & video generation" />
           <FeatureItem icon="🎭" text="Advanced filters & effects library" />
           <FeatureItem icon="📸" text="Auto-capture with focus detection" />

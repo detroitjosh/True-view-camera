@@ -108,6 +108,25 @@ Complete list of all features implemented in TrueView Camera.
   - FPS settings
   - Server integration ready
 
+### AI Image-to-Video Generation (NEW)
+- [x] **Animate Images**
+  - Single image animation with AI motion
+  - Multi-image movie creation
+  - Motion type selection
+  - Custom duration and FPS
+  - Integration with Stable Video Diffusion
+- [x] **Personalized Movie Creation**
+  - Select multiple images from gallery
+  - Create slideshows with AI transitions
+  - Ken Burns effect support
+  - Automated panning and zooming
+  - Natural motion between frames
+- [x] **Avatar Animation**
+  - Animate portraits with facial motion
+  - Expression transfer
+  - Custom motion prompts
+  - Talking head generation ready
+
 ### AI Editing Tools
 - [x] **Background replacement** (framework)
   - API endpoint ready
@@ -124,6 +143,9 @@ Complete list of all features implemented in TrueView Camera.
 - [x] Health check
 - [x] Image generation endpoint
 - [x] Video generation endpoint
+- [x] Image-to-video generation endpoint
+- [x] Multi-image slideshow endpoint
+- [x] Avatar animation endpoint
 - [x] Background replacement endpoint
 - [x] Retouching endpoint
 - [x] Comprehensive documentation
@@ -135,8 +157,8 @@ Complete list of all features implemented in TrueView Camera.
 - [x] **HomeScreen** - Landing page with feature overview
 - [x] **CameraScreen** - Camera interface with controls
 - [x] **EditScreen** - Photo editor with filters and effects
-- [x] **AIGenerateScreen** - AI generation interface
-- [x] **GalleryScreen** - Photo grid view
+- [x] **AIGenerateScreen** - AI generation interface with image animation
+- [x] **GalleryScreen** - Photo grid view with multi-select for movie creation
 
 ### Components (5 custom)
 - [x] **CameraControls** - Camera button panel

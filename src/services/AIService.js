@@ -153,4 +153,80 @@ export class AIService {
     }
     throw new Error('Retouching requires local server');
   }
+
+  /**
+   * Generate video from a single image with AI animation
+   * @param {string} imageUri - Source image to animate
+   * @param {string} prompt - Optional text prompt describing desired motion/animation
+   * @param {Object} options - Animation options (duration, motion_type, etc.)
+   * @returns {Promise<string>} - URI of generated video
+   */
+  async generateVideoFromImage(imageUri, prompt = '', options = {}) {
+    try {
+      if (await this.isServerAvailable()) {
+        const response = await axios.post(`${this.serverUrl}/generate/image-to-video`, {
+          image_uri: imageUri,
+          prompt,
+          duration: options.duration || 3,
+          motion_type: options.motionType || 'auto',
+          fps: options.fps || 24,
+        });
+        return response.data.video_url;
+      }
+
+      throw new Error('Image-to-video generation requires local server. Run: npm run server');
+    } catch (error) {
+      console.error('Error generating video from image:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate video/movie from multiple images (slideshow with transitions)
+   * @param {Array<string>} imageUris - Array of image URIs to combine
+   * @param {Object} options - Video options (transitions, duration per image, etc.)
+   * @returns {Promise<string>} - URI of generated video
+   */
+  async generateVideoFromMultipleImages(imageUris, options = {}) {
+    try {
+      if (await this.isServerAvailable()) {
+        const response = await axios.post(`${this.serverUrl}/generate/slideshow`, {
+          image_uris: imageUris,
+          duration_per_image: options.durationPerImage || 3,
+          transition_type: options.transitionType || 'fade',
+          fps: options.fps || 24,
+          include_motion: options.includeMotion || true,
+        });
+        return response.data.video_url;
+      }
+
+      throw new Error('Multi-image video generation requires local server. Run: npm run server');
+    } catch (error) {
+      console.error('Error generating video from multiple images:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create an animated avatar from a user image
+   * @param {string} imageUri - Portrait image to animate
+   * @param {string} motionPrompt - Description of desired motion/expression
+   * @returns {Promise<string>} - URI of animated avatar video
+   */
+  async animateAvatar(imageUri, motionPrompt) {
+    try {
+      if (await this.isServerAvailable()) {
+        const response = await axios.post(`${this.serverUrl}/generate/animate-avatar`, {
+          image_uri: imageUri,
+          motion_prompt: motionPrompt,
+        });
+        return response.data.video_url;
+      }
+
+      throw new Error('Avatar animation requires local server. Run: npm run server');
+    } catch (error) {
+      console.error('Error animating avatar:', error);
+      throw error;
+    }
+  }
 }

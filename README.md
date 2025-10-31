@@ -32,6 +32,9 @@ TrueView Camera is a comprehensive mobile camera application designed with inclu
 ### 🤖 **AI-Powered Creation**
 - **Text-to-Image Generation**: Create images from text descriptions using Stable Diffusion
 - **Text-to-Video Generation**: Generate short videos from prompts
+- **Image-to-Video Animation**: Bring your photos to life with AI-powered motion
+- **Personalized Movie Creation**: Create movies from multiple images with transitions
+- **Avatar Animation**: Animate portraits with natural facial motion
 - **Background Replacement**: AI-powered background editing
 - **Smart Retouching**: Enhance photos while preserving natural features
 
@@ -131,10 +134,23 @@ See [server/README.md](server/README.md) for detailed setup.
 
 ### AI Generation
 1. Tap **"AI Image & Video"** from home
-2. Select Image or Video mode
-3. Enter descriptive prompt (e.g., "A sunset over mountains")
-4. Tap **Generate** and wait
+2. Select mode:
+   - **Image**: Generate from text prompt
+   - **Video**: Generate video from text prompt
+   - **Animate**: Bring your photos to life with motion
+3. For animation mode:
+   - Tap **"Pick Images"** to select from gallery
+   - Select single image for animation or multiple for movie
+   - Optionally describe desired motion
+4. Tap **Generate** or **Create Movie** and wait
 5. Edit and share generated content
+
+**Creating a Movie from Gallery:**
+1. Open Gallery
+2. Long-press any photo to enter selection mode
+3. Tap additional photos to add to selection
+4. Tap **"🎬 Create Movie"** button
+5. AI will create a personalized movie with transitions
 
 **Note**: AI features require server setup or API keys. See [DOCUMENTATION.md](DOCUMENTATION.md).
 
