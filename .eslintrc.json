@@ -8,6 +8,7 @@
   },
   "env": {
     "react-native/react-native": true,
-    "node": true
+    "node": true,
+    "jest": true
   }
 }
