@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert,
 import * as ImagePicker from 'expo-image-picker';
 import { AIService } from '../services/AIService';
 
+const MAX_IMAGES_FOR_ANIMATION = 10;
+
 export default function AIGenerateScreen({ navigation, route }) {
   const [prompt, setPrompt] = useState('');
   const [generationType, setGenerationType] = useState('image'); // 'image', 'video', or 'animate'
@@ -23,9 +25,9 @@ export default function AIGenerateScreen({ navigation, route }) {
 
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: generationType === 'animate' ? true : false,
+        allowsMultipleSelection: generationType === 'animate',
         quality: 1,
-        selectionLimit: generationType === 'animate' ? 10 : 1,
+        selectionLimit: generationType === 'animate' ? MAX_IMAGES_FOR_ANIMATION : 1,
       });
 
       if (!result.canceled && result.assets) {

@@ -141,6 +141,13 @@ app.post('/generate/slideshow', async (req, res) => {
   try {
     const { image_uris, duration_per_image, transition_type, fps, include_motion } = req.body;
     
+    if (!image_uris || !Array.isArray(image_uris) || image_uris.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'image_uris array is required and must not be empty' 
+      });
+    }
+    
     console.log('Creating slideshow from', image_uris.length, 'images');
     console.log('Transition:', transition_type, 'Duration per image:', duration_per_image);
     
