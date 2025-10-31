@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/HomeScreen';
-import CameraScreen from './src/screens/CameraScreen';
+import VisionCameraScreen from './src/screens/VisionCameraScreen';
 import EditScreen from './src/screens/EditScreen';
 import AIGenerateScreen from './src/screens/AIGenerateScreen';
 import GalleryScreen from './src/screens/GalleryScreen';
@@ -31,7 +31,7 @@ export default function App() {
         />
         <Stack.Screen 
           name="Camera" 
-          component={CameraScreen}
+          component={VisionCameraScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen 

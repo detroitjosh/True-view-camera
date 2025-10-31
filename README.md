@@ -4,6 +4,8 @@
 
 📷 **An inclusive mobile camera app optimized for darker skin tones with AI-powered features**
 
+[![CI/CD](https://github.com/detroitjosh/True-view-camera/actions/workflows/ci.yml/badge.svg)](https://github.com/detroitjosh/True-view-camera/actions/workflows/ci.yml)
+
 [Features](#-features) • [Quick Start](#-quick-start) • [Documentation](DOCUMENTATION.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
@@ -12,18 +14,21 @@
 
 ## 🌟 Overview
 
-TrueView Camera is a comprehensive mobile camera application designed with inclusivity at its core. Building on Google's Real Tone research, it provides superior image quality for darker skin tones while offering advanced AI features, extensive filter options, and seamless social sharing.
+TrueView Camera is a comprehensive mobile camera application built with **React Native Vision Camera** and **TensorFlow Lite** for fast, low-latency AI-powered face detection and auto-capture. Designed with inclusivity at its core, it provides superior image quality for darker skin tones with face-region adaptive exposure/gamma/contrast adjustment.
 
 ## ✨ Features
 
 ### 🎨 **Skin-Tone Optimized Imaging**
 - **Adaptive Exposure**: Automatically adjusts exposure based on detected skin tones (+0.3 to +0.5 EV for darker skin)
+- **Face-Region Processing**: Targeted gamma, contrast, and exposure adjustments for face regions
 - **Enhanced Dynamic Range**: HDR-style capture preserves details in highlights and shadows
 - **Color Accuracy**: Natural skin tone representation across all complexions
 - **Local Tone Mapping**: Preserves texture while enhancing contrast
 
-### 📸 **Smart Camera**
-- **Auto-Capture**: Automatically takes photos when subject is in focus
+### 📸 **Smart Camera with TFLite AI**
+- **Real-time Face Detection**: Native TensorFlow Lite frame processors for low-latency detection
+- **Auto-Capture**: Automatically takes photos when face detection passes confidence threshold (no user action)
+- **Fast Frame Processing**: Native implementation ensures minimal latency
 - **Countdown Timer**: 3-second visual countdown for perfect selfies
 - **Real-time Filters**: Live preview with 8+ filter options
 - **Photo & Video**: High-quality photo capture and video recording
@@ -54,15 +59,26 @@ One-tap sharing to:
 ## 🚀 Quick Start
 
 ### Prerequisites
-```bash
-# Install Expo CLI globally
-npm install -g expo-cli
 
-# Or use npx (no global install needed)
-npx expo-cli --version
+This app uses **React Native Vision Camera** with native TensorFlow Lite integration, requiring native code compilation.
+
+```bash
+# Required tools
+- Node.js 16+ and npm
+- Xcode 14+ (for iOS)
+- Android Studio (for Android)
+- CocoaPods (for iOS dependencies)
+
+# Install React Native CLI
+npm install -g react-native-cli
+
+# Install CocoaPods (macOS only)
+sudo gem install cocoapods
 ```
 
-### Installation
+📖 **For detailed installation instructions, see [INSTALL.md](INSTALL.md)**
+
+### Quick Installation
 
 1. **Clone the repository**
    ```bash
@@ -72,24 +88,29 @@ npx expo-cli --version
 
 2. **Install dependencies**
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
 
-3. **Configure environment** (optional)
+3. **Generate native directories (if not present)**
    ```bash
-   cp .env.example .env
-   # Edit .env with your API keys if using AI features
+   npx expo prebuild
    ```
 
-4. **Start the app**
+4. **Install iOS dependencies (macOS only)**
    ```bash
-   npm start
+   cd ios && pod install && cd ..
    ```
 
-5. **Open on your device**
-   - Install **Expo Go** from App Store (iOS) or Play Store (Android)
-   - Scan the QR code with your camera (iOS) or Expo Go app (Android)
-   - Or press `i` for iOS simulator / `a` for Android emulator
+5. **Run the app**
+   ```bash
+   # iOS
+   npm run ios
+
+   # Android
+   npm run android
+   ```
+
+📖 **For troubleshooting and detailed setup, see [INSTALL.md](INSTALL.md)**
 
 ### Optional: AI Server Setup
 
@@ -145,7 +166,7 @@ True-view-camera/
 ├── src/
 │   ├── screens/           # App screens
 │   │   ├── HomeScreen.js          # Main landing page
-│   │   ├── CameraScreen.js        # Camera interface
+│   │   ├── VisionCameraScreen.js  # Vision Camera with TFLite
 │   │   ├── EditScreen.js          # Photo editor
 │   │   ├── AIGenerateScreen.js    # AI generation
 │   │   └── GalleryScreen.js       # Photo gallery
@@ -157,9 +178,18 @@ True-view-camera/
 │   │   └── SocialSharePanel.js    # Share buttons
 │   ├── utils/            # Utilities
 │   │   ├── SkinToneProcessor.js   # Skin tone enhancement
-│   │   └── AutoCaptureDetector.js # Focus detection
+│   │   ├── AutoCaptureDetector.js # Focus detection
+│   │   └── __tests__/             # Unit tests
 │   └── services/         # External services
 │       └── AIService.js           # AI API integration
+├── ios/                   # iOS native code
+│   ├── FrameProcessorPlugins/     # TFLite frame processors
+│   └── TrueViewCamera.xcodeproj/
+├── android/               # Android native code
+│   └── app/src/main/java/com/trueviewcamera/
+│       └── frameprocessor/        # TFLite frame processors
+├── assets/
+│   └── models/           # TensorFlow Lite models
 ├── server/               # Optional AI server
 │   ├── server.js         # Express server
 │   └── README.md         # Server documentation
@@ -171,10 +201,15 @@ True-view-camera/
 ## 🎨 Technology Stack
 
 **Mobile App:**
-- React Native
-- Expo (Camera, Media Library, Image Manipulator)
+- React Native (bare workflow with Expo modules)
+- React Native Vision Camera (camera pipeline & frame processing)
+- TensorFlow Lite (native face detection)
 - React Navigation
-- TensorFlow.js (for ML features)
+- Expo modules (Media Library, File System, Image Manipulator)
+
+**Native Frame Processors:**
+- iOS: Swift + TensorFlow Lite Swift
+- Android: Java + TensorFlow Lite Android
 
 **AI Server (Optional):**
 - Node.js + Express
@@ -198,6 +233,40 @@ SKIN_TONE_ENHANCEMENT=true           # Apply skin tone processing
 AI_SERVER_URL=http://localhost:3001
 HUGGINGFACE_API_KEY=your_key_here
 STABLE_DIFFUSION_API_KEY=your_key_here
+```
+
+## 🧪 Testing
+
+The project includes comprehensive unit tests for core functionality.
+
+### Run Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run tests with coverage
+npm test -- --coverage
+```
+
+### Test Coverage
+
+- **SkinToneProcessor**: 16 tests covering exposure, gamma, and contrast adjustments
+- **AutoCaptureDetector**: 15 tests covering focus detection, stability, and face scoring
+
+### Test Structure
+
+```
+src/
+└── utils/
+    ├── SkinToneProcessor.js
+    ├── AutoCaptureDetector.js
+    └── __tests__/
+        ├── SkinToneProcessor.test.js    # 16 tests
+        └── AutoCaptureDetector.test.js  # 15 tests
 ```
 
 ## 📚 Documentation

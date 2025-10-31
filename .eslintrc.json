@@ -1,0 +1,14 @@
+{
+  "extends": ["expo", "prettier"],
+  "plugins": ["react", "react-native"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "react/prop-types": "off",
+    "react-native/no-inline-styles": "warn"
+  },
+  "env": {
+    "react-native/react-native": true,
+    "node": true,
+    "jest": true
+  }
+}

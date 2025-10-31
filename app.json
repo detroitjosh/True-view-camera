@@ -43,9 +43,11 @@
     },
     "plugins": [
       [
-        "expo-camera",
+        "react-native-vision-camera",
         {
-          "cameraPermission": "Allow TrueView Camera to access your camera for taking photos and videos."
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera for taking photos and videos.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone for recording audio."
         }
       ],
       [
