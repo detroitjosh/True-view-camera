@@ -203,8 +203,12 @@ STABLE_DIFFUSION_API_KEY=your_key_here
 ## 📚 Documentation
 
 - **[Full Documentation](DOCUMENTATION.md)** - Comprehensive guide
+- **[Roadmap](ROADMAP.md)** - Development roadmap and future plans
 - **[Server Setup](server/README.md)** - AI server configuration
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
+- **[Privacy Policy](PRIVACY.md)** - Privacy best practices
+- **[Inclusivity Guidelines](INCLUSIVITY.md)** - Inclusivity standards
+- **[Support](SUPPORT.md)** - Getting help
 
 ## 🤝 Contributing
 
@@ -241,21 +245,33 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 - **Issues**: [GitHub Issues](https://github.com/detroitjosh/True-view-camera/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/detroitjosh/True-view-camera/discussions)
+- **Support Guide**: [SUPPORT.md](SUPPORT.md)
 
 ## 🗺️ Roadmap
 
+See **[ROADMAP.md](ROADMAP.md)** for detailed development plans.
+
+**Current Status (v1.0 - Complete)**
 - [x] Core camera functionality
 - [x] Skin tone optimization
 - [x] Auto-capture feature
 - [x] Filter library
 - [x] Social sharing
 - [x] AI generation framework
-- [ ] Advanced ML-based skin detection
+
+**Next Up (v1.1 - In Progress)**
+- [ ] Enhanced CI/CD with comprehensive testing
+- [ ] Fairness testing framework
+- [ ] Dataset annotation workflows
+- [ ] Privacy & inclusivity best practices documentation
+- [ ] Community feedback integration
+
+**Future Plans (v1.2+)**
+- [ ] Advanced ML-based skin detection with TFLite
 - [ ] Video editing features
-- [ ] Cloud backup option
 - [ ] AR effects
+- [ ] Multi-language support (i18n)
 - [ ] Advanced HDR processing
-- [ ] Multi-language support
 
 ---
 
