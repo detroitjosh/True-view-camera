@@ -21,6 +21,8 @@ jobs:
   prepare-annotation:
     name: Prepare Annotation Environment
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v3
@@ -53,6 +55,8 @@ jobs:
   skin-tone-annotation:
     name: Skin Tone Classification
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.event.inputs.annotation_type == 'skin_tone' || github.event.inputs.annotation_type == 'full_annotation'
     needs: prepare-annotation
     
@@ -114,6 +118,8 @@ jobs:
   lighting-annotation:
     name: Lighting Condition Classification
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.event.inputs.annotation_type == 'lighting' || github.event.inputs.annotation_type == 'full_annotation'
     needs: prepare-annotation
     
@@ -159,6 +165,8 @@ jobs:
   face-quality-annotation:
     name: Face Detection Quality Assessment
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.event.inputs.annotation_type == 'face_quality' || github.event.inputs.annotation_type == 'full_annotation'
     needs: prepare-annotation
     
@@ -207,6 +215,10 @@ jobs:
   generate-annotation-report:
     name: Generate Annotation Report
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      issues: write
     needs: [skin-tone-annotation, lighting-annotation, face-quality-annotation]
     if: always()
     
