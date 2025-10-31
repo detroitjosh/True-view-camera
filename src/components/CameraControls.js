@@ -14,6 +14,8 @@ export default function CameraControls({
   onClose,
   currentFilter,
   onFilterChange,
+  onToggleRealTone,
+  realToneEnabled,
 }) {
   return (
     <View style={styles.container}>
@@ -30,6 +32,12 @@ export default function CameraControls({
           onPress={onToggleAutoCapture}
         >
           <Text style={styles.topButtonText}>🎯</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.topButton, realToneEnabled && styles.realToneButtonActive]}
+          onPress={onToggleRealTone}
+        >
+          <Text style={styles.topButtonText}>✨</Text>
         </TouchableOpacity>
       </View>
 
@@ -133,6 +141,9 @@ const styles = StyleSheet.create({
   },
   topButtonActive: {
     backgroundColor: '#e94560',
+  },
+  realToneButtonActive: {
+    backgroundColor: '#4CAF50',
   },
   topButtonText: {
     fontSize: 24,

@@ -1,9 +1,18 @@
 /**
  * SkinToneProcessor - Enhances images for darker skin tones
  * Based on Google's Real Tone research principles
+ * 
+ * DEPRECATED: Use RealToneProcessor for more advanced features
+ * This class is maintained for backward compatibility
  */
+
+import { RealToneProcessor } from './RealToneProcessor';
+
 export class SkinToneProcessor {
   constructor() {
+    // Initialize with RealToneProcessor for enhanced features
+    this.realToneProcessor = new RealToneProcessor();
+    
     this.config = {
       // Exposure compensation for darker skin tones
       exposureBoost: 0.3,
@@ -18,30 +27,18 @@ export class SkinToneProcessor {
 
   /**
    * Enhance image for better representation of darker skin tones
+   * Now uses RealToneProcessor for advanced enhancement
    * @param {string} imageUri - URI of the image to enhance
    * @returns {Promise<string>} - URI of enhanced image
    */
   async enhanceImage(imageUri) {
     try {
-      // In a production app, this would use native image processing
-      // or a library like expo-image-manipulator with custom filters
+      console.log('SkinToneProcessor: Using RealToneProcessor for enhancement');
       
-      // For this implementation, we return the original URI
-      // but in production, you would apply:
-      // 1. Adaptive exposure based on skin tone detection
-      // 2. Local tone mapping to preserve highlights and shadows
-      // 3. Color correction for natural skin tones
-      // 4. Sharpening and detail enhancement
+      // Use the more advanced RealToneProcessor
+      const enhancedUri = await this.realToneProcessor.enhanceImage(imageUri);
       
-      console.log('Applying skin-tone enhancement with config:', this.config);
-      
-      // Placeholder for actual image processing
-      // In production, integrate with:
-      // - TensorFlow.js for skin tone detection
-      // - Custom shaders via expo-gl for real-time processing
-      // - expo-image-manipulator for post-capture enhancement
-      
-      return imageUri;
+      return enhancedUri;
     } catch (error) {
       console.error('Error enhancing image:', error);
       return imageUri;

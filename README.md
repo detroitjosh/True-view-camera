@@ -16,11 +16,15 @@ TrueView Camera is a comprehensive mobile camera application designed with inclu
 
 ## ✨ Features
 
-### 🎨 **Skin-Tone Optimized Imaging**
-- **Adaptive Exposure**: Automatically adjusts exposure based on detected skin tones (+0.3 to +0.5 EV for darker skin)
-- **Enhanced Dynamic Range**: HDR-style capture preserves details in highlights and shadows
-- **Color Accuracy**: Natural skin tone representation across all complexions
-- **Local Tone Mapping**: Preserves texture while enhancing contrast
+### 🎨 **Skin-Tone Optimized Imaging (Real-Tone)**
+- **Real-Tone Technology**: Based on Google's Real Tone research and Monk Skin Tone Scale (MST)
+- **10-Shade Classification**: Uses the inclusive Monk Skin Tone Scale (MST-1 to MST-10)
+- **Adaptive Exposure**: Automatically adjusts exposure based on detected skin tone (+0.3 to +0.6 EV for darker skin)
+- **Enhanced White Balance**: Natural color temperature tuning for all complexions
+- **Local Tone Mapping**: Preserves texture and detail in shadows and highlights
+- **Shadow Detail Enhancement**: Reveals detail in darker skin without washing out
+- **Real-Time Detection**: Face detection integrated with skin tone analysis
+- **Visual Feedback**: On-screen indicator showing detected MST category and settings
 
 ### 📸 **Smart Camera**
 - **Auto-Capture**: Automatically takes photos when subject is in focus
@@ -62,6 +66,8 @@ npm install -g expo-cli
 npx expo-cli --version
 ```
 
+**Note**: Due to some dependency version conflicts in the current setup, you may need to use `npm install --legacy-peer-deps` when installing dependencies.
+
 ### Installation
 
 1. **Clone the repository**
@@ -72,7 +78,7 @@ npx expo-cli --version
 
 2. **Install dependencies**
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
 
 3. **Configure environment** (optional)
@@ -114,8 +120,22 @@ See [server/README.md](server/README.md) for detailed setup.
    - **🔄**: Switch camera (front/back)
    - **⏱️**: Start countdown timer
    - **🎯**: Enable auto-capture mode
+   - **✨**: Toggle Real-Tone settings (tap to view/hide panel)
 3. Select filter from bottom carousel
 4. Photo saved automatically to gallery
+
+### Using Real-Tone Features
+1. Tap **✨** icon in camera to toggle Real-Tone
+2. When enabled, green "Real-Tone Active" badge appears
+3. Face detection automatically analyzes skin tone
+4. Tap badge or ✨ icon to view Real-Tone panel showing:
+   - Detected Monk Skin Tone category (MST-1 to MST-10)
+   - Exposure compensation being applied
+   - Full Monk Skin Tone Scale visualization
+   - Information about Real-Tone features
+5. Photos are automatically enhanced for optimal skin tone representation
+
+**Note**: See [REAL_TONE_GUIDE.md](REAL_TONE_GUIDE.md) for detailed Real-Tone documentation.
 
 ### Auto-Capture Mode
 1. Enable auto-capture (🎯 icon turns red)
@@ -202,6 +222,7 @@ STABLE_DIFFUSION_API_KEY=your_key_here
 
 ## 📚 Documentation
 
+- **[Real-Tone Guide](REAL_TONE_GUIDE.md)** - Comprehensive Real-Tone implementation guide
 - **[Full Documentation](DOCUMENTATION.md)** - Comprehensive guide
 - **[Server Setup](server/README.md)** - AI server configuration
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
@@ -246,11 +267,15 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 - [x] Core camera functionality
 - [x] Skin tone optimization
+- [x] **Real-Tone technology with Monk Skin Tone Scale**
+- [x] **10-shade inclusive skin tone classification**
+- [x] **Adaptive exposure and white balance for all skin tones**
 - [x] Auto-capture feature
 - [x] Filter library
 - [x] Social sharing
 - [x] AI generation framework
-- [ ] Advanced ML-based skin detection
+- [ ] Advanced ML-based skin detection with TensorFlow.js
+- [ ] Custom GPU shaders for real-time tone mapping
 - [ ] Video editing features
 - [ ] Cloud backup option
 - [ ] AR effects

@@ -3,9 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'rea
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { SkinToneProcessor } from '../utils/SkinToneProcessor';
+import { RealToneProcessor, MONK_SKIN_TONE_SCALE } from '../utils/RealToneProcessor';
 import { AutoCaptureDetector } from '../utils/AutoCaptureDetector';
 import CameraControls from '../components/CameraControls';
 import CountdownOverlay from '../components/CountdownOverlay';
+import RealTonePanel from '../components/RealTonePanel';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,9 +20,13 @@ export default function CameraScreen({ navigation }) {
   const [countdown, setCountdown] = useState(null);
   const [exposureCompensation, setExposureCompensation] = useState(0.5);
   const [currentFilter, setCurrentFilter] = useState('none');
+  const [realToneEnabled, setRealToneEnabled] = useState(true);
+  const [showRealTonePanel, setShowRealTonePanel] = useState(false);
+  const [detectedSkinTone, setDetectedSkinTone] = useState(null);
   
   const cameraRef = useRef(null);
   const skinToneProcessor = useRef(new SkinToneProcessor());
+  const realToneProcessor = useRef(new RealToneProcessor());
   const autoCaptureDetector = useRef(new AutoCaptureDetector());
 
   useEffect(() => {
@@ -29,6 +35,9 @@ export default function CameraScreen({ navigation }) {
       const { status: mediaStatus } = await MediaLibrary.requestPermissionsAsync();
       setHasPermission(cameraStatus === 'granted' && mediaStatus === 'granted');
     })();
+    
+    // Set initial Real-Tone state
+    realToneProcessor.current.setEnabled(realToneEnabled);
   }, []);
 
   const takePicture = async () => {
@@ -40,8 +49,14 @@ export default function CameraScreen({ navigation }) {
           skipProcessing: false,
         });
         
-        // Apply skin-tone enhancement
-        const enhancedPhoto = await skinToneProcessor.current.enhanceImage(photo.uri);
+        // Apply Real-Tone enhancement if enabled
+        let enhancedPhoto = photo.uri;
+        if (realToneEnabled) {
+          enhancedPhoto = await realToneProcessor.current.enhanceImage(photo.uri, detectedSkinTone);
+        } else {
+          // Fallback to legacy skin tone processor
+          enhancedPhoto = await skinToneProcessor.current.enhanceImage(photo.uri);
+        }
         
         // Save to library
         await MediaLibrary.saveToLibraryAsync(enhancedPhoto || photo.uri);
@@ -102,6 +117,13 @@ export default function CameraScreen({ navigation }) {
   };
 
   const onFacesDetected = ({ faces }) => {
+    if (faces.length > 0 && realToneEnabled) {
+      // Simulate skin tone detection from face data
+      // In production, this would analyze the actual face region pixels
+      const estimatedMST = 6; // Default to medium-tan (MST-6)
+      setDetectedSkinTone(MONK_SKIN_TONE_SCALE[`MST_${estimatedMST}`]);
+    }
+    
     if (autoCaptureEnabled && faces.length > 0) {
       const isInFocus = autoCaptureDetector.current.checkFocus(faces);
       if (isInFocus) {
@@ -109,6 +131,12 @@ export default function CameraScreen({ navigation }) {
         setAutoCaptureEnabled(false); // Take only one picture
       }
     }
+  };
+
+  const toggleRealTone = () => {
+    const newState = !realToneEnabled;
+    setRealToneEnabled(newState);
+    realToneProcessor.current.setEnabled(newState);
   };
 
   if (hasPermission === null) {
@@ -134,7 +162,7 @@ export default function CameraScreen({ navigation }) {
         type={cameraType}
         flashMode={flash}
         ratio="16:9"
-        onFacesDetected={autoCaptureEnabled ? onFacesDetected : undefined}
+        onFacesDetected={onFacesDetected}
         faceDetectorSettings={{
           mode: Camera.Constants.FaceDetectorMode.accurate,
           detectLandmarks: Camera.Constants.FaceDetectorLandmarks.all,
@@ -142,6 +170,29 @@ export default function CameraScreen({ navigation }) {
         }}
       >
         {countdown !== null && <CountdownOverlay count={countdown} />}
+        
+        {/* Real-Tone Info Panel */}
+        {showRealTonePanel && (
+          <View style={styles.panelContainer}>
+            <RealTonePanel
+              realToneEnabled={realToneEnabled}
+              onToggleRealTone={toggleRealTone}
+              detectedSkinTone={detectedSkinTone}
+            />
+          </View>
+        )}
+        
+        {/* Real-Tone Status Indicator */}
+        {realToneEnabled && !showRealTonePanel && (
+          <TouchableOpacity 
+            style={styles.realToneIndicator}
+            onPress={() => setShowRealTonePanel(true)}
+          >
+            <Text style={styles.realToneIndicatorText}>
+              ✨ Real-Tone {detectedSkinTone ? `MST-${detectedSkinTone.id}` : 'Active'}
+            </Text>
+          </TouchableOpacity>
+        )}
         
         <CameraControls
           onCapture={takePicture}
@@ -164,6 +215,8 @@ export default function CameraScreen({ navigation }) {
           onClose={() => navigation.goBack()}
           currentFilter={currentFilter}
           onFilterChange={setCurrentFilter}
+          onToggleRealTone={() => setShowRealTonePanel(!showRealTonePanel)}
+          realToneEnabled={realToneEnabled}
         />
       </Camera>
     </View>
@@ -194,6 +247,28 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  panelContainer: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+  realToneIndicator: {
+    position: 'absolute',
+    top: 60,
+    right: 15,
+    backgroundColor: 'rgba(76, 175, 80, 0.9)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    zIndex: 5,
+  },
+  realToneIndicatorText: {
+    color: '#fff',
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });
