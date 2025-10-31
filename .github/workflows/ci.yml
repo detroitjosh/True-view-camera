@@ -21,7 +21,7 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install --legacy-peer-deps
     
     - name: Run ESLint
       run: npm run lint --if-present
@@ -41,11 +41,46 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: npm install --legacy-peer-deps
     
     - name: Run tests
       run: npm test --if-present
       continue-on-error: true
+
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+    
+    - name: Generate native directories
+      run: npx expo prebuild --platform android --clean
+    
+    - name: Build Android APK
+      working-directory: android
+      run: ./gradlew assembleDebug --no-daemon
+      
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-debug.apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk
 
   build-ios:
     name: Build iOS
@@ -61,42 +96,25 @@ jobs:
         node-version: '18'
         cache: 'npm'
     
-    - name: Setup Expo
-      uses: expo/expo-github-action@v8
-      with:
-        expo-version: latest
-        token: ${{ secrets.EXPO_TOKEN }}
-    
     - name: Install dependencies
-      run: npm ci
+      run: npm install --legacy-peer-deps
     
-    - name: Build iOS app
-      run: echo "EAS Build would run here"
-      # eas build --platform ios --non-interactive
-
-  build-android:
-    name: Build Android
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    - name: Generate native directories
+      run: npx expo prebuild --platform ios --clean
     
-    steps:
-    - uses: actions/checkout@v3
+    - name: Install CocoaPods
+      run: |
+        cd ios
+        pod install
     
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Setup Expo
-      uses: expo/expo-github-action@v8
-      with:
-        expo-version: latest
-        token: ${{ secrets.EXPO_TOKEN }}
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build Android app
-      run: echo "EAS Build would run here"
-      # eas build --platform android --non-interactive
+    - name: Build iOS App
+      run: |
+        cd ios
+        xcodebuild -workspace TrueViewCamera.xcworkspace \
+          -scheme TrueViewCamera \
+          -configuration Debug \
+          -sdk iphonesimulator \
+          -derivedDataPath build \
+          CODE_SIGNING_ALLOWED=NO \
+          CODE_SIGNING_REQUIRED=NO
+      continue-on-error: true
