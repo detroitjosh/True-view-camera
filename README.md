@@ -76,7 +76,9 @@ npm install -g react-native-cli
 sudo gem install cocoapods
 ```
 
-### Installation
+📖 **For detailed installation instructions, see [INSTALL.md](INSTALL.md)**
+
+### Quick Installation
 
 1. **Clone the repository**
    ```bash
@@ -96,59 +98,19 @@ sudo gem install cocoapods
 
 4. **Install iOS dependencies (macOS only)**
    ```bash
-   cd ios
-   pod install
-   cd ..
+   cd ios && pod install && cd ..
    ```
 
-5. **Configure environment** (optional)
+5. **Run the app**
    ```bash
-   cp .env.example .env
-   # Edit .env with your API keys if using AI features
+   # iOS
+   npm run ios
+
+   # Android
+   npm run android
    ```
 
-### Running the App
-
-#### iOS
-
-```bash
-# Run on iOS simulator
-npm run ios
-
-# Or using Xcode:
-# 1. Open ios/TrueViewCamera.xcworkspace in Xcode
-# 2. Select a simulator or device
-# 3. Press Run (Cmd + R)
-```
-
-#### Android
-
-```bash
-# Start Metro bundler
-npm start
-
-# In another terminal, run Android
-npm run android
-
-# Or using Android Studio:
-# 1. Open the android folder in Android Studio
-# 2. Wait for Gradle sync to complete
-# 3. Select a device or emulator
-# 4. Press Run
-```
-
-### Development Build
-
-For development with native modules:
-
-```bash
-# Install Expo development client
-npx expo install expo-dev-client
-
-# Create development build
-npx expo run:ios    # for iOS
-npx expo run:android # for Android
-```
+📖 **For troubleshooting and detailed setup, see [INSTALL.md](INSTALL.md)**
 
 ### Optional: AI Server Setup
 
@@ -204,7 +166,7 @@ True-view-camera/
 ├── src/
 │   ├── screens/           # App screens
 │   │   ├── HomeScreen.js          # Main landing page
-│   │   ├── CameraScreen.js        # Camera interface
+│   │   ├── VisionCameraScreen.js  # Vision Camera with TFLite
 │   │   ├── EditScreen.js          # Photo editor
 │   │   ├── AIGenerateScreen.js    # AI generation
 │   │   └── GalleryScreen.js       # Photo gallery
@@ -216,9 +178,18 @@ True-view-camera/
 │   │   └── SocialSharePanel.js    # Share buttons
 │   ├── utils/            # Utilities
 │   │   ├── SkinToneProcessor.js   # Skin tone enhancement
-│   │   └── AutoCaptureDetector.js # Focus detection
+│   │   ├── AutoCaptureDetector.js # Focus detection
+│   │   └── __tests__/             # Unit tests
 │   └── services/         # External services
 │       └── AIService.js           # AI API integration
+├── ios/                   # iOS native code
+│   ├── FrameProcessorPlugins/     # TFLite frame processors
+│   └── TrueViewCamera.xcodeproj/
+├── android/               # Android native code
+│   └── app/src/main/java/com/trueviewcamera/
+│       └── frameprocessor/        # TFLite frame processors
+├── assets/
+│   └── models/           # TensorFlow Lite models
 ├── server/               # Optional AI server
 │   ├── server.js         # Express server
 │   └── README.md         # Server documentation
@@ -262,6 +233,40 @@ SKIN_TONE_ENHANCEMENT=true           # Apply skin tone processing
 AI_SERVER_URL=http://localhost:3001
 HUGGINGFACE_API_KEY=your_key_here
 STABLE_DIFFUSION_API_KEY=your_key_here
+```
+
+## 🧪 Testing
+
+The project includes comprehensive unit tests for core functionality.
+
+### Run Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run tests with coverage
+npm test -- --coverage
+```
+
+### Test Coverage
+
+- **SkinToneProcessor**: 16 tests covering exposure, gamma, and contrast adjustments
+- **AutoCaptureDetector**: 15 tests covering focus detection, stability, and face scoring
+
+### Test Structure
+
+```
+src/
+└── utils/
+    ├── SkinToneProcessor.js
+    ├── AutoCaptureDetector.js
+    └── __tests__/
+        ├── SkinToneProcessor.test.js    # 16 tests
+        └── AutoCaptureDetector.test.js  # 15 tests
 ```
 
 ## 📚 Documentation
